@@ -5,13 +5,16 @@ import android.util.Xml;
 
 import com.virjar.superappium.util.Constants;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
 public class SuperAppiumDumper {
-    public static String dumpToString(ViewModel viewModel) {
+    public static String dumpToXml(ViewModel viewModel) {
         try {
             XmlSerializer serializer = Xml.newSerializer();
             StringWriter stringWriter = new StringWriter();
@@ -30,8 +33,12 @@ public class SuperAppiumDumper {
     }
 
     private static void dumpNodeRec(ViewModel node, XmlSerializer serializer) throws IOException {
-        serializer.startTag("", "node");
+        String tag = String.valueOf(node.attribute(Constants.className));
+        serializer.startTag("", tag);
         for (String attrKey : node.attributeKeys()) {
+            if (attrKey.equals(Constants.className)) {
+                continue;
+            }
             Object value = node.attribute(attrKey);
             if (value == null) {
                 continue;
@@ -49,6 +56,46 @@ public class SuperAppiumDumper {
                         i, count, node.toString()));
             }
         }
-        serializer.endTag("", "node");
+        serializer.endTag("", tag);
+    }
+
+    public static String dumpToJson(ViewModel viewModel) {
+        JSONObject jsonObject = new JSONObject();
+        dumpNodeRec(viewModel, jsonObject);
+        return jsonObject.toString();
+    }
+
+    private static void dumpNodeRec(ViewModel node, JSONObject container) {
+        for (String attrKey : node.attributeKeys()) {
+            Object value = node.attribute(attrKey);
+            if (value == null) {
+                continue;
+            }
+            try {
+                container.putOpt(attrKey, value);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        int count = node.childCount();
+        if (count <= 0) {
+            return;
+        }
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < count; i++) {
+            ViewModel child = node.childAt(i);
+            if (child == null) {
+                jsonArray.put((Object) null);
+            } else {
+                JSONObject childContainer = new JSONObject();
+                dumpNodeRec(child, childContainer);
+                jsonArray.put(childContainer);
+            }
+        }
+        try {
+            container.put("children",jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
