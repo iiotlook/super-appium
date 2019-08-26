@@ -67,25 +67,29 @@ public class ValueGetters {
     @SuppressWarnings("unchecked")
     public static Map<String, ValueGetter> valueGetters(ViewModel viewModel, boolean saveCache) {
         Class<? extends View> theClass = viewModel.getOriginView().getClass();
+        Map<String, ValueGetter> rule;
         if (cache.containsKey(theClass)) {
-            return cache.get(theClass);
-        }
-
-        // calculate
-        Map<String, ValueGetter> ret = new HashMap<>();
-        for (ValueGetter valueGetter : valueGetters) {
-            if (valueGetter.support(theClass)) {
-                ret.put(valueGetter.attr(), new LazyValueGetter(valueGetter));
+            rule = cache.get(theClass);
+        } else {
+            // calculate
+            rule = new HashMap<>();
+            for (ValueGetter valueGetter : valueGetters) {
+                if (valueGetter.support(theClass)) {
+                    rule.put(valueGetter.attr(), valueGetter);
+                }
+            }
+            if (saveCache) {
+                cache.put(theClass, rule);
             }
         }
 
-        if (saveCache) {
-            cache.put(theClass, ret);
+        //avoid reload value data
+        Map<String, ValueGetter> ret = new HashMap<>();
+        for (Map.Entry<String, ValueGetter> entry : rule.entrySet()) {
+            ret.put(entry.getKey(), new LazyValueGetter(entry.getValue()));
         }
-
         return ret;
     }
-
 
 
 }
