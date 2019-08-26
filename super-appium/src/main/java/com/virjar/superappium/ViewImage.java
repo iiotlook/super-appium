@@ -10,14 +10,14 @@ import com.virjar.superappium.util.Constants;
 import java.util.Collection;
 import java.util.Map;
 
-public class ViewModel {
+public class ViewImage {
     private View originView;
     private Map<String, ValueGetter> attributes;
-    private ViewModel parent = null;
+    private ViewImage parent = null;
     private ValueGetter<String> type;
     private int indexOfParent = -1;
 
-    public ViewModel(View originView) {
+    public ViewImage(View originView) {
         this.originView = originView;
         attributes = ValueGetters.valueGetters(this);
         type = attrName(Constants.className);
@@ -60,25 +60,25 @@ public class ViewModel {
         return theChildCount;
     }
 
-    private ViewModel[] children;
+    private ViewImage[] children;
 
-    public ViewModel childAt(int index) {
+    public ViewImage childAt(int index) {
         if (childCount() < 0) {
             throw new IllegalStateException("can not parse child node for none ViewGroup object!!");
         }
         if (children == null) {
-            children = new ViewModel[childCount()];
+            children = new ViewImage[childCount()];
         }
-        ViewModel viewModel = children[index];
-        if (viewModel != null) {
-            return viewModel;
+        ViewImage viewImage = children[index];
+        if (viewImage != null) {
+            return viewImage;
         }
         ViewGroup viewGroup = (ViewGroup) originView;
-        viewModel = new ViewModel(viewGroup.getChildAt(index));
-        viewModel.parent = this;
-        viewModel.indexOfParent = index;
-        children[index] = viewModel;
-        return viewModel;
+        viewImage = new ViewImage(viewGroup.getChildAt(index));
+        viewImage.parent = this;
+        viewImage.indexOfParent = index;
+        children[index] = viewImage;
+        return viewImage;
     }
 
     public Integer index() {

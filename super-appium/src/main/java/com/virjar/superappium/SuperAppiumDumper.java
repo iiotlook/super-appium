@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 public class SuperAppiumDumper {
-    public static String dumpToXml(ViewModel viewModel) {
+    public static String dumpToXml(ViewImage viewImage) {
         try {
             XmlSerializer serializer = Xml.newSerializer();
             StringWriter stringWriter = new StringWriter();
@@ -22,7 +22,7 @@ public class SuperAppiumDumper {
             serializer.startDocument("UTF-8", true);
             serializer.startTag("", "hierarchy");
             serializer.attribute("", "comment", "dumped by super-appium, notice this not compatible with uiautomator");
-            dumpNodeRec(viewModel, serializer);
+            dumpNodeRec(viewImage, serializer);
             serializer.endTag("", "hierarchy");
             serializer.endDocument();
             return stringWriter.toString();
@@ -32,7 +32,7 @@ public class SuperAppiumDumper {
         return null;
     }
 
-    private static void dumpNodeRec(ViewModel node, XmlSerializer serializer) throws IOException {
+    private static void dumpNodeRec(ViewImage node, XmlSerializer serializer) throws IOException {
         String tag = String.valueOf(node.attribute(Constants.className));
         serializer.startTag("", tag);
         for (String attrKey : node.attributeKeys()) {
@@ -48,7 +48,7 @@ public class SuperAppiumDumper {
 
         int count = node.childCount();
         for (int i = 0; i < count; i++) {
-            ViewModel child = node.childAt(i);
+            ViewImage child = node.childAt(i);
             if (child != null) {
                 dumpNodeRec(child, serializer);
             } else {
@@ -59,13 +59,13 @@ public class SuperAppiumDumper {
         serializer.endTag("", tag);
     }
 
-    public static String dumpToJson(ViewModel viewModel) {
+    public static String dumpToJson(ViewImage viewImage) {
         JSONObject jsonObject = new JSONObject();
-        dumpNodeRec(viewModel, jsonObject);
+        dumpNodeRec(viewImage, jsonObject);
         return jsonObject.toString();
     }
 
-    private static void dumpNodeRec(ViewModel node, JSONObject container) {
+    private static void dumpNodeRec(ViewImage node, JSONObject container) {
         for (String attrKey : node.attributeKeys()) {
             Object value = node.attribute(attrKey);
             if (value == null) {
@@ -83,7 +83,7 @@ public class SuperAppiumDumper {
         }
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < count; i++) {
-            ViewModel child = node.childAt(i);
+            ViewImage child = node.childAt(i);
             if (child == null) {
                 jsonArray.put((Object) null);
             } else {

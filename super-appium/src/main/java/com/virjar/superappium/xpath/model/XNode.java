@@ -1,21 +1,21 @@
 package com.virjar.superappium.xpath.model;
 
-import com.virjar.superappium.ViewModel;
+import com.virjar.superappium.ViewImage;
 
 public class XNode {
     public enum NodeType {
         NODE, TEXT
     }
 
-    private ViewModel element;
+    private ViewImage element;
     private boolean isText;
     private String textVal;
 
-    public ViewModel getElement() {
+    public ViewImage getElement() {
         return element;
     }
 
-    public XNode setElement(ViewModel element) {
+    public XNode setElement(ViewImage element) {
         this.element = element;
         return this;
     }
@@ -38,9 +38,9 @@ public class XNode {
         return this;
     }
 
-    public static XNode e(ViewModel viewModel) {
+    public static XNode e(ViewImage viewImage) {
         XNode xNode = new XNode();
-        xNode.setElement(viewModel).setText(false);
+        xNode.setElement(viewImage).setText(false);
         return xNode;
     }
 

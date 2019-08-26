@@ -2,7 +2,7 @@ package com.virjar.superappium.lazy;
 
 import android.view.View;
 
-import com.virjar.superappium.ViewModel;
+import com.virjar.superappium.ViewImage;
 import com.virjar.superappium.lazy.basic.HintGetter;
 import com.virjar.superappium.lazy.basic.ImageUriGetter;
 import com.virjar.superappium.lazy.basic.TextGetter;
@@ -55,18 +55,18 @@ public class ValueGetters {
 
     private static Map<Class<? extends View>, Map<String, ValueGetter>> cache = new HashMap<>();
 
-    public static Map<String, ValueGetter> valueGetters(ViewModel viewModel) {
-        Class<? extends View> aClass = viewModel.getOriginView().getClass();
+    public static Map<String, ValueGetter> valueGetters(ViewImage viewImage) {
+        Class<? extends View> aClass = viewImage.getOriginView().getClass();
         boolean saveCache = false;
         if (aClass.getClassLoader().equals(View.class.getClassLoader())) {
             saveCache = true;
         }
-        return valueGetters(viewModel, saveCache);
+        return valueGetters(viewImage, saveCache);
     }
 
     @SuppressWarnings("unchecked")
-    public static Map<String, ValueGetter> valueGetters(ViewModel viewModel, boolean saveCache) {
-        Class<? extends View> theClass = viewModel.getOriginView().getClass();
+    public static Map<String, ValueGetter> valueGetters(ViewImage viewImage, boolean saveCache) {
+        Class<? extends View> theClass = viewImage.getOriginView().getClass();
         Map<String, ValueGetter> rule;
         if (cache.containsKey(theClass)) {
             rule = cache.get(theClass);

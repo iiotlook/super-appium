@@ -1,6 +1,6 @@
 package com.virjar.superappium.xpath.model;
 
-import com.virjar.superappium.ViewModel;
+import com.virjar.superappium.ViewImage;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -39,15 +39,15 @@ public abstract class XpathEvaluator {
         private List<XNode> handleNode(List<XNode> input, final XpathNode xpathNode) {
 
             // 目前只支持对element元素进行抽取,如果中途抽取到了文本,则会断节
-            List<ViewModel> elements = XpathUtil.transformToElement(input);
-            List<ViewModel> contextElements;
+            List<ViewImage> elements = XpathUtil.transformToElement(input);
+            List<ViewImage> contextElements;
 
             // 轴
             AxisFunction axis = xpathNode.getAxis();
             if (axis != null) {
                 contextElements = Lists.newLinkedList();
-                for (ViewModel element : elements) {
-                    ViewModel call = axis.call(element, xpathNode.getAxisParams());
+                for (ViewImage element : elements) {
+                    ViewImage call = axis.call(element, xpathNode.getAxisParams());
                     if (call != null) {
                         contextElements.addAll(call);
                     }

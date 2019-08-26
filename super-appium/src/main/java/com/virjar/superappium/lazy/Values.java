@@ -1,7 +1,5 @@
 package com.virjar.superappium.lazy;
 
-import com.virjar.superappium.ViewModel;
-
 public class Values {
 //    public static ValueGetter<String> className(ViewModel view) {
 //        return cache(new ClassNameGetter(view.getOriginView()));
