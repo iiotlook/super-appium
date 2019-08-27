@@ -1,6 +1,9 @@
 package com.virjar.superappium.xpath.model;
 
 import com.virjar.superappium.ViewImage;
+import com.virjar.superappium.util.Lists;
+import com.virjar.superappium.xpath.function.axis.AxisFunction;
+import com.virjar.superappium.xpath.util.XpathUtil;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -47,7 +50,7 @@ public abstract class XpathEvaluator {
             if (axis != null) {
                 contextElements = Lists.newLinkedList();
                 for (ViewImage element : elements) {
-                    ViewImage call = axis.call(element, xpathNode.getAxisParams());
+                    List<ViewImage> call = axis.call(element, xpathNode.getAxisParams());
                     if (call != null) {
                         contextElements.addAll(call);
                     }
@@ -57,21 +60,32 @@ public abstract class XpathEvaluator {
             }
 
             // 调用抽取函数
-            List<XNode> SIPNodes = xpathNode.getSelectFunction().call(xpathNode.getScopeEm(),
-                    new Elements(contextElements), xpathNode.getSelectParams());
+            List<XNode> xNodesList = xpathNode.getSelectFunction().call(xpathNode.getScopeEm(),
+                    contextElements, xpathNode.getSelectParams());
 
             // 谓语过滤
-            if (xpathNode.getPredicate() == null) {
-                return SIPNodes;
+            if (xpathNode.getPredicates() == null) {
+                return xNodesList;
             }
 
-            // 谓语只支持对元素过滤,非元素节点直接被过滤
-            return Lists.newLinkedList(Iterables.filter(SIPNodes, new Predicate<XNode>() {
-                @Override
-                public boolean apply(XNode input) {
-                    return xpathNode.getPredicate().isValid(input.getElement());
+            List<XNode> finalResult = Lists.newLinkedList();
+            //两层循环
+            for (XNode xNode : xNodesList) {
+                if (xNode.isText()) {
+                    continue;
                 }
-            }));
+                boolean valid = true;
+                for (Predicate predicate : xpathNode.getPredicates()) {
+                    if (!predicate.isValid(xNode.getElement())) {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (valid) {
+                    finalResult.add(xNode);
+                }
+            }
+            return finalResult;
         }
 
         @Override

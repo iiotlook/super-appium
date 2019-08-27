@@ -1,10 +1,17 @@
 package com.virjar.superappium.xpath.parser;
 
+import com.virjar.superappium.util.Lists;
 import com.virjar.superappium.util.StringUtils;
 import com.virjar.superappium.xpath.XpathParser;
+import com.virjar.superappium.xpath.exception.NoSuchAxisException;
 import com.virjar.superappium.xpath.exception.XpathSyntaxErrorException;
+import com.virjar.superappium.xpath.function.FunctionEnv;
+import com.virjar.superappium.xpath.function.axis.AxisFunction;
+import com.virjar.superappium.xpath.model.Predicate;
 import com.virjar.superappium.xpath.model.XpathEvaluator;
 import com.virjar.superappium.xpath.model.XpathNode;
+import com.virjar.superappium.xpath.parser.expression.ExpressionParser;
+import com.virjar.superappium.xpath.parser.expression.SyntaxNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -294,7 +301,7 @@ public class XpathStateMachine {
                     String predicate = stateMachine.tokenQueue.chompBalanced('[', ']');
                     SyntaxNode predicateTree = new ExpressionParser(new TokenQueue(predicate)).parse();
                     stateMachine.xpathChain.getLast()
-                            .setPredicate(new Predicate(StringUtils.trimToEmpty(predicate), predicateTree));
+                            .getPredicates().add(new Predicate(StringUtils.trimToEmpty(predicate), predicateTree));
                 }
                 // check
                 stateMachine.tokenQueue.consumeWhitespace();

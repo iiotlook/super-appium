@@ -1,5 +1,9 @@
 package com.virjar.superappium.xpath.model;
 
+import com.virjar.superappium.xpath.function.axis.AxisFunction;
+import com.virjar.superappium.xpath.function.select.SelectFunction;
+
+import java.util.LinkedList;
 import java.util.List;
 
 import lombok.Getter;
@@ -44,7 +48,7 @@ public class XpathNode {
      */
     @Getter
     @Setter
-    private Predicate predicate;
+    private LinkedList<Predicate> predicates = new LinkedList<>();
 
     @Setter
     @Getter

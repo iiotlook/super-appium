@@ -8,4 +8,8 @@ public class XNodes extends LinkedList<XNode> {
     public XNodes(List<XNode> handleNode) {
         super(handleNode);
     }
+
+    public XNodes(XNode e) {
+        add(e);
+    }
 }

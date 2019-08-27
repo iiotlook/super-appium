@@ -2,7 +2,10 @@ package com.virjar.superappium.xpath.parser;
 
 import com.virjar.superappium.util.StringUtils;
 
+import lombok.Getter;
+
 public class TokenQueue {
+    @Getter
     protected String queue;
     protected int pos = 0;
 
