@@ -1,8 +1,9 @@
-package com.virjar.superappium;
+package com.virjar.superappium.traversor;
 
 import android.util.Log;
 import android.util.Xml;
 
+import com.virjar.superappium.ViewImage;
 import com.virjar.superappium.util.Constants;
 
 import org.json.JSONArray;

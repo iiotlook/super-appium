@@ -5,9 +5,17 @@ import android.view.ViewGroup;
 
 import com.virjar.superappium.lazy.ValueGetter;
 import com.virjar.superappium.lazy.ValueGetters;
+import com.virjar.superappium.traversor.Collector;
+import com.virjar.superappium.traversor.Evaluator;
 import com.virjar.superappium.util.Constants;
+import com.virjar.superappium.util.Lists;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class ViewImage {
@@ -15,14 +23,23 @@ public class ViewImage {
     private Map<String, ValueGetter> attributes;
     private ViewImage parent = null;
     private ValueGetter<String> type;
+    private ValueGetter<String> text;
     private int indexOfParent = -1;
 
     public ViewImage(View originView) {
         this.originView = originView;
         attributes = ValueGetters.valueGetters(this);
         type = attrName(Constants.className);
+        text = attrName(Constants.text);
     }
 
+    public String getType() {
+        return type.get(this);
+    }
+
+    public String getText() {
+        return text.get(this);
+    }
 
     @SuppressWarnings("unchecked")
     private <T> ValueGetter<T> attrName(String attrName) {
@@ -86,4 +103,84 @@ public class ViewImage {
     }
 
 
+    public List<ViewImage> parents() {
+        List<ViewImage> ret = Lists.newArrayList();
+        ViewImage parent = this.parent;
+        while (parent != null) {
+            ret.add(parent);
+            parent = parent.parent;
+        }
+        return ret;
+    }
+
+    public List<ViewImage> children() {
+        if (childCount() < 0) {
+            return Lists.newArrayList();
+        }
+        List<ViewImage> ret = new ArrayList<>(childCount());
+        for (int i = 0; i < theChildCount; i++) {
+            ret.add(childAt(i));
+        }
+        return ret;
+    }
+
+    public ViewImages getAllElements() {
+        return Collector.collect(new Evaluator.AllElements(), this);
+    }
+
+    public ViewImage parentNode() {
+        return parent;
+    }
+
+    public ViewImage nextSibling() {
+        if (parent == null) {
+            //root
+            return null;
+        }
+        int nextSiblingIndex = indexOfParent + 1;
+        if (parent.childCount() > nextSiblingIndex) {
+            return parent.childAt(nextSiblingIndex);
+        }
+        return null;
+    }
+
+    public ViewImage previousSibling() {
+        if (parent == null) {
+            //root
+            return null;
+        }
+        int nextSiblingIndex = indexOfParent - 1;
+        if (nextSiblingIndex < 0) {
+            return null;
+        }
+        return parent.childAt(nextSiblingIndex);
+    }
+
+    public ViewImages siblings() {
+        if (parent == null) {
+            return new ViewImages();
+        }
+        int parentChildren = parent.childCount();
+        ViewImages viewImages = new ViewImages(parentChildren - 1);
+        for (int i = 0; i < parentChildren; i++) {
+            ViewImage viewImage = parent.childAt(i);
+            if (viewImage == this) {
+                continue;
+            }
+            viewImages.add(viewImage);
+        }
+        return viewImages;
+    }
+
+    public String attributes() {
+        JSONObject jsonObject = new JSONObject();
+        for(String key:attributeKeys()){
+            try {
+                jsonObject.put(key,attribute(key));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return jsonObject.toString();
+    }
 }

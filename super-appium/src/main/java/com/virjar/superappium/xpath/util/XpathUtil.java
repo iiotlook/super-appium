@@ -1,11 +1,14 @@
 package com.virjar.superappium.xpath.util;
 
 import com.virjar.superappium.ViewImage;
+import com.virjar.superappium.ViewImages;
 import com.virjar.superappium.xpath.exception.EvaluateException;
 import com.virjar.superappium.xpath.model.XNode;
+import com.virjar.superappium.xpath.model.XNodes;
 import com.virjar.superappium.xpath.parser.expression.SyntaxNode;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,4 +59,20 @@ public class XpathUtil {
         }
         return null;
     }
+
+    public static ViewImage root(ViewImage element) {
+        while (element.parentNode() != null) {
+            element = element.parentNode();
+        }
+        return element;
+    }
+
+    public static XNodes transform(Collection<ViewImage> viewImages) {
+        XNodes xNodes = new XNodes();
+        for (ViewImage viewImage : viewImages) {
+            xNodes.add(XNode.e(viewImage));
+        }
+        return xNodes;
+    }
+
 }

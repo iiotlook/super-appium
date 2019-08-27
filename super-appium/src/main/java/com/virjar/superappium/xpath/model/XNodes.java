@@ -12,4 +12,7 @@ public class XNodes extends LinkedList<XNode> {
     public XNodes(XNode e) {
         add(e);
     }
+
+    public XNodes() {
+    }
 }

@@ -132,4 +132,8 @@ public class StringUtils {
         }
         return true;
     }
+
+    public static boolean isNotBlank(String cs) {
+        return !isBlank(cs);
+    }
 }
