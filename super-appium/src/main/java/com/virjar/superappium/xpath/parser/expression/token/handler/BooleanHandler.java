@@ -1,5 +1,6 @@
 package com.virjar.superappium.xpath.parser.expression.token.handler;
 
+import com.virjar.superappium.util.BooleanUtils;
 import com.virjar.superappium.util.Lists;
 import com.virjar.superappium.xpath.exception.XpathSyntaxErrorException;
 import com.virjar.superappium.xpath.function.FunctionEnv;
@@ -12,7 +13,7 @@ public class BooleanHandler implements TokenHandler {
     @Override
     public SyntaxNode parseToken(final String tokenStr) throws XpathSyntaxErrorException {
         return new FunctionNode(FunctionEnv.getFilterFunction(BooleanUtils.toBoolean(tokenStr) ? "true" : "false"),
-                Lists.<SyntaxNode> newLinkedList());
+                Lists.<SyntaxNode>newLinkedList());
     }
 
     @Override

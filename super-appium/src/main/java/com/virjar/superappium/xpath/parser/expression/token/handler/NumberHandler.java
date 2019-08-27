@@ -1,7 +1,7 @@
 package com.virjar.superappium.xpath.parser.expression.token.handler;
 
 import com.virjar.superappium.ViewImage;
-import com.virjar.superappium.util.StringUtils;
+import com.virjar.superappium.util.NumberUtils;
 import com.virjar.superappium.xpath.parser.expression.SyntaxNode;
 import com.virjar.superappium.xpath.parser.expression.token.Token;
 import com.virjar.superappium.xpath.parser.expression.token.TokenHandler;
@@ -12,13 +12,12 @@ public class NumberHandler implements TokenHandler {
         return new SyntaxNode() {
             @Override
             public Object calc(ViewImage element) {
-                if (StringUtils.contains(tokenStr, ".")) {
+                if (tokenStr.contains(".")) {
                     return NumberUtils.toDouble(tokenStr);
                 } else {
                     return NumberUtils.toInt(tokenStr);
                 }
             }
-\
         };
     }
 

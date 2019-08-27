@@ -1,13 +1,33 @@
 package com.virjar.superappium.xpath.parser.expression;
 
 import com.virjar.superappium.util.Lists;
+import com.virjar.superappium.util.ObjectFactory;
 import com.virjar.superappium.util.StringUtils;
 import com.virjar.superappium.xpath.parser.expression.node.AlgorithmUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.AddUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.And2Unit;
+import com.virjar.superappium.xpath.parser.expression.operator.AndUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.ContainUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.DivideUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.EndWithUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.EqualUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.GreaterEqualUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.GreaterThanUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.LessEqualUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.LessThanUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.MinusUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.MultiUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.NotEqualUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.NotMatchUnit;
 import com.virjar.superappium.xpath.parser.expression.operator.OpKey;
+import com.virjar.superappium.xpath.parser.expression.operator.Or2Unit;
+import com.virjar.superappium.xpath.parser.expression.operator.OrUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.RegexUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.RemainderUnit;
+import com.virjar.superappium.xpath.parser.expression.operator.StartWithUnit;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import lombok.Getter;
@@ -23,20 +43,39 @@ public class OperatorEnv {
 
     @SuppressWarnings("unchecked")
     private static void registerDefault() {
-        ClassScanner.AnnotationClassVisitor visitor = new ClassScanner.AnnotationClassVisitor(OpKey.class);
-        ClassScanner.scan(visitor, Lists.newArrayList("com.virjar.sipsoup.parse.expression.operator"));
-        Set<Class> classSet = visitor.getClassSet();
-        for (Class clazz : classSet) {
-            if (AlgorithmUnit.class.isAssignableFrom(clazz)) {
-                addOperator(clazz);
-            }
-        }
+//        ClassScanner.AnnotationClassVisitor visitor = new ClassScanner.AnnotationClassVisitor(OpKey.class);
+//        ClassScanner.scan(visitor, Lists.newArrayList("com.virjar.sipsoup.parse.expression.operator"));
+//        Set<Class> classSet = visitor.getClassSet();
+//        for (Class clazz : classSet) {
+//            if (AlgorithmUnit.class.isAssignableFrom(clazz)) {
+//                addOperator(clazz);
+//            }
+//        }
+        addOperator(AddUnit.class);
+        addOperator(AndUnit.class);
+        addOperator(And2Unit.class);
+        addOperator(ContainUnit.class);
+        addOperator(DivideUnit.class);
+        addOperator(EndWithUnit.class);
+        addOperator(EqualUnit.class);
+        addOperator(GreaterEqualUnit.class);
+        addOperator(GreaterThanUnit.class);
+        addOperator(LessEqualUnit.class);
+        addOperator(LessThanUnit.class);
+        addOperator(MinusUnit.class);
+        addOperator(MultiUnit.class);
+        addOperator(NotEqualUnit.class);
+        addOperator(NotMatchUnit.class);
+        addOperator(Or2Unit.class);
+        addOperator(OrUnit.class);
+        addOperator(RegexUnit.class);
+        addOperator(RemainderUnit.class);
+        addOperator(StartWithUnit.class);
     }
 
     public static void addOperator(String key, int priority, Class<? extends AlgorithmUnit> algorithmUnit) {
         if ("#".equals(key)) {
-            throw new IllegalStateException("\"#\" can not to be register a operator,please contact author virjar@virjar.com"))
-            ;
+            throw new IllegalStateException("\"#\" can not to be register a operator,please contact author virjar@virjar.com");
         }
 
         AlgorithmHolder holder = new AlgorithmHolder(algorithmUnit, key, priority);

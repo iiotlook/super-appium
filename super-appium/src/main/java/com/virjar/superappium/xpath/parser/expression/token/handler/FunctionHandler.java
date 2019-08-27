@@ -2,6 +2,7 @@ package com.virjar.superappium.xpath.parser.expression.token.handler;
 
 import com.virjar.superappium.xpath.exception.XpathSyntaxErrorException;
 import com.virjar.superappium.xpath.parser.TokenQueue;
+import com.virjar.superappium.xpath.parser.expression.FunctionParser;
 import com.virjar.superappium.xpath.parser.expression.SyntaxNode;
 import com.virjar.superappium.xpath.parser.expression.token.Token;
 import com.virjar.superappium.xpath.parser.expression.token.TokenHandler;

@@ -1,8 +1,13 @@
 package com.virjar.superappium.util;
 
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * some utils migrated from guava
@@ -44,5 +49,40 @@ public class Lists {
         return new LinkedList<E>();
     }
 
+    static <T> Collection<T> cast(Iterable<T> iterable) {
+        return (Collection<T>) iterable;
+    }
 
+
+    public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList(
+            Iterable<? extends E> elements) {
+        // We copy elements to an ArrayList first, rather than incurring the
+        // quadratic cost of adding them to the COWAL directly.
+        Collection<? extends E> elementsCollection =
+                (elements instanceof Collection)
+                        ? cast(elements)
+                        : newArrayList(elements);
+        return new CopyOnWriteArrayList<E>(elementsCollection);
+    }
+
+    public static <E> ArrayList<E> newArrayList(Iterable<? extends E> elements) {
+        // Let ArrayList's sizing logic work, if possible
+        return (elements instanceof Collection)
+                ? new ArrayList<E>(cast(elements))
+                : newArrayList(elements.iterator());
+    }
+
+    public static <E> ArrayList<E> newArrayList(Iterator<? extends E> elements) {
+        ArrayList<E> list = newArrayList();
+        addAll(list, elements);
+        return list;
+    }
+
+    public static <T> boolean addAll(Collection<T> addTo, Iterator<? extends T> iterator) {
+        boolean wasModified = false;
+        while (iterator.hasNext()) {
+            wasModified |= addTo.add(iterator.next());
+        }
+        return wasModified;
+    }
 }
