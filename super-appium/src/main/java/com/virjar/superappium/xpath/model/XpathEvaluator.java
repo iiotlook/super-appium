@@ -21,7 +21,16 @@ public abstract class XpathEvaluator {
         return XpathUtil.transformToString(evaluate(xNodes));
     }
 
-    public List<ViewImage> evaluateToElement(XNodes xNodes) {
+
+    public String evaluateToSingleString(XNodes xNodes) {
+        List<String> strings = evaluateToString(xNodes);
+        if (strings.size() == 0) {
+            return null;
+        }
+        return strings.get(0);
+    }
+
+    public ViewImages evaluateToElement(XNodes xNodes) {
         return XpathUtil.transformToElement(evaluate(xNodes));
     }
 

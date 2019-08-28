@@ -3,6 +3,7 @@ package com.virjar.superappium.util;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.os.Handler;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -33,6 +34,15 @@ public class ReflectUtil {
         return (Application) Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null);
     }
 
+    @SuppressLint("PrivateApi")
+    public static Object getMainThread() {
+        try {
+            return Class.forName("android.app.ActivityThread").getMethod("currentActivityThread").invoke(null);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static void makeAccessible(Field field) {
         if (!Modifier.isPublic(field.getModifiers())) {
             field.setAccessible(true);
@@ -52,7 +62,7 @@ public class ReflectUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getFieldValue(Object object, String fieldName) {
+    public static <T> T getObjectField(Object object, String fieldName) {
         try {
             return (T) findField(object.getClass(), fieldName).get(object);
         } catch (IllegalAccessException e) {
@@ -934,4 +944,7 @@ public class ReflectUtil {
         }
         return toClass.isAssignableFrom(cls);
     }
+
+
+
 }

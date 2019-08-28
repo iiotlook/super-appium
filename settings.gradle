@@ -1,2 +1,2 @@
-include ':XposedDriver'
+include ':XposedDriver', ':stub'
 include 'super-appium'

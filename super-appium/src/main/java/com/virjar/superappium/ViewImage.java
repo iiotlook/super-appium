@@ -9,6 +9,9 @@ import com.virjar.superappium.traversor.Collector;
 import com.virjar.superappium.traversor.Evaluator;
 import com.virjar.superappium.util.Constants;
 import com.virjar.superappium.util.Lists;
+import com.virjar.superappium.xpath.XpathParser;
+import com.virjar.superappium.xpath.model.XNode;
+import com.virjar.superappium.xpath.model.XNodes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -183,4 +186,13 @@ public class ViewImage {
         }
         return jsonObject.toString();
     }
+
+    public ViewImages xpath(String xpath) {
+        return XpathParser.compileNoError(xpath).evaluateToElement(new XNodes(XNode.e(this)));
+    }
+
+    public String xpath4String(String xpath) {
+        return XpathParser.compileNoError(xpath).evaluateToSingleString(new XNodes(XNode.e(this)));
+    }
+
 }
