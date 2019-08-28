@@ -1,6 +1,7 @@
 package com.virjar.superappium.xpath.util;
 
 import com.virjar.superappium.ViewImage;
+import com.virjar.superappium.ViewImages;
 import com.virjar.superappium.xpath.exception.EvaluateException;
 import com.virjar.superappium.xpath.model.XNode;
 import com.virjar.superappium.xpath.model.XNodes;
@@ -12,8 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class XpathUtil {
-    public static List<ViewImage> transformToElement(List<XNode> input) {
-        List<ViewImage> ret = new LinkedList<>();
+    public static ViewImages transformToElement(List<XNode> input) {
+        ViewImages ret = new ViewImages();
         for (XNode xNode : input) {
             if (!xNode.isText()) {
                 ret.add(xNode.getElement());
@@ -74,4 +75,13 @@ public class XpathUtil {
         return xNodes;
     }
 
+    public static List<String> transformToString(XNodes evaluate) {
+        LinkedList<String> ret = new LinkedList<>();
+        for (XNode xNode : evaluate) {
+            if (xNode.isText()) {
+                ret.add(xNode.getTextVal());
+            }
+        }
+        return ret;
+    }
 }

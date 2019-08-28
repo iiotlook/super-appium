@@ -1,6 +1,7 @@
 package com.virjar.superappium.xpath.model;
 
 import com.virjar.superappium.ViewImage;
+import com.virjar.superappium.ViewImages;
 import com.virjar.superappium.util.Lists;
 import com.virjar.superappium.xpath.function.axis.AxisFunction;
 import com.virjar.superappium.xpath.util.XpathUtil;
@@ -14,6 +15,14 @@ public abstract class XpathEvaluator {
 
     public XpathEvaluator wrap(XpathEvaluator newRule) {
         throw new UnsupportedOperationException();
+    }
+
+    public List<String> evaluateToString(XNodes xNodes) {
+        return XpathUtil.transformToString(evaluate(xNodes));
+    }
+
+    public List<ViewImage> evaluateToElement(XNodes xNodes) {
+        return XpathUtil.transformToElement(evaluate(xNodes));
     }
 
     public static class AnanyseStartEvaluator extends XpathEvaluator {
@@ -42,13 +51,13 @@ public abstract class XpathEvaluator {
         private List<XNode> handleNode(List<XNode> input, final XpathNode xpathNode) {
 
             // 目前只支持对element元素进行抽取,如果中途抽取到了文本,则会断节
-            List<ViewImage> elements = XpathUtil.transformToElement(input);
-            List<ViewImage> contextElements;
+            ViewImages elements = XpathUtil.transformToElement(input);
+            ViewImages contextElements;
 
             // 轴
             AxisFunction axis = xpathNode.getAxis();
             if (axis != null) {
-                contextElements = Lists.newLinkedList();
+                contextElements = new ViewImages();
                 for (ViewImage element : elements) {
                     List<ViewImage> call = axis.call(element, xpathNode.getAxisParams());
                     if (call != null) {

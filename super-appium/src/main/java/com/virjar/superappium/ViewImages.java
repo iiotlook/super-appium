@@ -9,6 +9,9 @@ public class ViewImages extends ArrayList<ViewImage> {
         addAll(Arrays.asList(parentNodes));
     }
 
+    public ViewImages() {
+    }
+
     public ViewImages(List<ViewImage> tempList) {
         super(tempList);
     }
