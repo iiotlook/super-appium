@@ -1,4 +1,4 @@
-package com.virjar.superappium.lazy;
+package com.virjar.superappium.xmodel;
 
 public class Values {
 //    public static ValueGetter<String> className(ViewModel view) {

@@ -1,24 +1,24 @@
-package com.virjar.superappium.lazy;
+package com.virjar.superappium.xmodel;
 
 import com.virjar.superappium.ViewImage;
 
-public class LazyValueGetter<T> implements ValueGetter {
+public class LazyValueGetter<T> {
     private ValueGetter<T> delegate;
     private T theValue;
     private boolean hasDelegateCalled = false;
+    private ViewImage viewImage;
 
-    public LazyValueGetter(ValueGetter<T> delegate) {
+    LazyValueGetter(ValueGetter<T> delegate, ViewImage viewImage) {
         this.delegate = delegate;
+        this.viewImage = viewImage;
     }
 
 
-    @Override
     public boolean support(Class type) {
         return delegate.support(type);
     }
 
-    @Override
-    public Object get(ViewImage viewImage) {
+    public T get() {
         if (hasDelegateCalled) {
             return theValue;
         }
@@ -32,7 +32,6 @@ public class LazyValueGetter<T> implements ValueGetter {
         return theValue;
     }
 
-    @Override
     public String attr() {
         return delegate.attr();
     }

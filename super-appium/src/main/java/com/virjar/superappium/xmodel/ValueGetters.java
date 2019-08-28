@@ -1,21 +1,21 @@
-package com.virjar.superappium.lazy;
+package com.virjar.superappium.xmodel;
 
 import android.view.View;
 
 import com.virjar.superappium.ViewImage;
-import com.virjar.superappium.lazy.basic.HintGetter;
-import com.virjar.superappium.lazy.basic.ImageUriGetter;
-import com.virjar.superappium.lazy.basic.TextGetter;
-import com.virjar.superappium.lazy.view.ClassNameGetter;
-import com.virjar.superappium.lazy.view.ClickableValueGetter;
-import com.virjar.superappium.lazy.view.ContentDescriptionValueGetter;
-import com.virjar.superappium.lazy.view.EnabledValueGetter;
-import com.virjar.superappium.lazy.view.FocusableValueGetter;
-import com.virjar.superappium.lazy.view.IdGetter;
-import com.virjar.superappium.lazy.view.IndexGetter;
-import com.virjar.superappium.lazy.view.LongClickableValueGetter;
-import com.virjar.superappium.lazy.view.PackageNameValueGetter;
-import com.virjar.superappium.lazy.view.SelectedValueGetter;
+import com.virjar.superappium.xmodel.basic.HintGetter;
+import com.virjar.superappium.xmodel.basic.ImageUriGetter;
+import com.virjar.superappium.xmodel.basic.TextGetter;
+import com.virjar.superappium.xmodel.view.ClassNameGetter;
+import com.virjar.superappium.xmodel.view.ClickableValueGetter;
+import com.virjar.superappium.xmodel.view.ContentDescriptionValueGetter;
+import com.virjar.superappium.xmodel.view.EnabledValueGetter;
+import com.virjar.superappium.xmodel.view.FocusableValueGetter;
+import com.virjar.superappium.xmodel.view.IdGetter;
+import com.virjar.superappium.xmodel.view.IndexGetter;
+import com.virjar.superappium.xmodel.view.LongClickableValueGetter;
+import com.virjar.superappium.xmodel.view.PackageNameValueGetter;
+import com.virjar.superappium.xmodel.view.SelectedValueGetter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class ValueGetters {
 
     private static Map<Class<? extends View>, Map<String, ValueGetter>> cache = new HashMap<>();
 
-    public static Map<String, ValueGetter> valueGetters(ViewImage viewImage) {
+    public static Map<String, LazyValueGetter> valueGetters(ViewImage viewImage) {
         Class<? extends View> aClass = viewImage.getOriginView().getClass();
         boolean saveCache = false;
         if (aClass.getClassLoader().equals(View.class.getClassLoader())) {
@@ -65,7 +65,7 @@ public class ValueGetters {
     }
 
     @SuppressWarnings("unchecked")
-    public static Map<String, ValueGetter> valueGetters(ViewImage viewImage, boolean saveCache) {
+    public static Map<String, LazyValueGetter> valueGetters(ViewImage viewImage, boolean saveCache) {
         Class<? extends View> theClass = viewImage.getOriginView().getClass();
         Map<String, ValueGetter> rule;
         if (cache.containsKey(theClass)) {
@@ -83,10 +83,10 @@ public class ValueGetters {
             }
         }
 
-        //avoid reload value data
-        Map<String, ValueGetter> ret = new HashMap<>();
+//        //avoid reload value data
+        Map<String, LazyValueGetter> ret = new HashMap<>();
         for (Map.Entry<String, ValueGetter> entry : rule.entrySet()) {
-            ret.put(entry.getKey(), new LazyValueGetter(entry.getValue()));
+            ret.put(entry.getKey(), new LazyValueGetter(entry.getValue(), viewImage));
         }
         return ret;
     }

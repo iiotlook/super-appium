@@ -1,10 +1,10 @@
-package com.virjar.superappium.lazy.view;
+package com.virjar.superappium.xmodel.view;
 
 import android.content.Context;
 import android.view.View;
 
 import com.virjar.superappium.ViewImage;
-import com.virjar.superappium.lazy.ValueGetter;
+import com.virjar.superappium.xmodel.ValueGetter;
 import com.virjar.superappium.util.Constants;
 import com.virjar.superappium.util.ReflectUtil;
 

@@ -1,14 +1,14 @@
-package com.virjar.superappium.lazy.view;
+package com.virjar.superappium.xmodel.view;
 
 import com.virjar.superappium.ViewImage;
-import com.virjar.superappium.lazy.ValueGetter;
+import com.virjar.superappium.xmodel.ValueGetter;
 import com.virjar.superappium.util.Constants;
 
-public class EnabledValueGetter implements ValueGetter<Boolean> {
+public class ClickableValueGetter implements ValueGetter<Boolean> {
 
     @Override
     public Boolean get(ViewImage viewImage) {
-        return viewImage.getOriginView().isEnabled();
+        return viewImage.getOriginView().isClickable();
     }
 
     @Override
@@ -18,6 +18,6 @@ public class EnabledValueGetter implements ValueGetter<Boolean> {
 
     @Override
     public String attr() {
-        return Constants.enable;
+        return Constants.clickable;
     }
 }

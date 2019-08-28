@@ -49,12 +49,12 @@ public class XpathStateMachine {
 
     private LinkedList<XpathNode> xpathChain = new LinkedList<>();
 
-    XpathStateMachine(TokenQueue tokenQueue) {
+    public XpathStateMachine(TokenQueue tokenQueue) {
         this.tokenQueue = tokenQueue;
     }
 
 
-    enum BuilderState {
+    public enum BuilderState {
 
         // 解析起始
         SCOPE {

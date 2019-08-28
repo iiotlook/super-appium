@@ -1,4 +1,4 @@
-package com.virjar.superappium.lazy;
+package com.virjar.superappium.xmodel;
 
 import com.virjar.superappium.ViewImage;
 

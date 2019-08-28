@@ -1,7 +1,6 @@
 package com.virjar.superappium.xpath.util;
 
 import com.virjar.superappium.ViewImage;
-import com.virjar.superappium.ViewImages;
 import com.virjar.superappium.xpath.exception.EvaluateException;
 import com.virjar.superappium.xpath.model.XNode;
 import com.virjar.superappium.xpath.model.XNodes;

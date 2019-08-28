@@ -3,8 +3,8 @@ package com.virjar.superappium;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.virjar.superappium.lazy.ValueGetter;
-import com.virjar.superappium.lazy.ValueGetters;
+import com.virjar.superappium.xmodel.LazyValueGetter;
+import com.virjar.superappium.xmodel.ValueGetters;
 import com.virjar.superappium.traversor.Collector;
 import com.virjar.superappium.traversor.Evaluator;
 import com.virjar.superappium.util.Constants;
@@ -20,10 +20,10 @@ import java.util.Map;
 
 public class ViewImage {
     private View originView;
-    private Map<String, ValueGetter> attributes;
+    private Map<String, LazyValueGetter> attributes;
     private ViewImage parent = null;
-    private ValueGetter<String> type;
-    private ValueGetter<String> text;
+    private LazyValueGetter<String> type;
+    private LazyValueGetter<String> text;
     private int indexOfParent = -1;
 
     public ViewImage(View originView) {
@@ -34,15 +34,15 @@ public class ViewImage {
     }
 
     public String getType() {
-        return type.get(this);
+        return type.get();
     }
 
     public String getText() {
-        return text.get(this);
+        return text.get();
     }
 
     @SuppressWarnings("unchecked")
-    private <T> ValueGetter<T> attrName(String attrName) {
+    private <T> LazyValueGetter<T> attrName(String attrName) {
         return attributes.get(attrName);
     }
 
@@ -51,11 +51,11 @@ public class ViewImage {
     }
 
     public Object attribute(String key) {
-        ValueGetter valueGetter = attributes.get(key);
+        LazyValueGetter valueGetter = attributes.get(key);
         if (valueGetter == null) {
             return null;
         }
-        return valueGetter.get(this);
+        return valueGetter.get();
     }
 
 
@@ -174,9 +174,9 @@ public class ViewImage {
 
     public String attributes() {
         JSONObject jsonObject = new JSONObject();
-        for(String key:attributeKeys()){
+        for (String key : attributeKeys()) {
             try {
-                jsonObject.put(key,attribute(key));
+                jsonObject.put(key, attribute(key));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

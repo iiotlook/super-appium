@@ -1,9 +1,9 @@
-package com.virjar.superappium.lazy.view;
+package com.virjar.superappium.xmodel.view;
 
 import android.view.View;
 
 import com.virjar.superappium.ViewImage;
-import com.virjar.superappium.lazy.ValueGetter;
+import com.virjar.superappium.xmodel.ValueGetter;
 import com.virjar.superappium.util.Constants;
 
 public class IdGetter implements ValueGetter<String> {
