@@ -1,5 +1,6 @@
 package com.virjar.superappium.xmodel.view;
 
+import android.content.res.Resources;
 import android.view.View;
 
 import com.virjar.superappium.ViewImage;
@@ -14,7 +15,12 @@ public class IdGetter implements ValueGetter<String> {
         if (id <= 0) {
             return null;
         }
-        return originView.getResources().getResourceName(id);
+        try {
+            return originView.getResources().getResourceName(id);
+        } catch (Resources.NotFoundException e) {
+            //这里可能报错
+            return null;
+        }
     }
 
     @Override
